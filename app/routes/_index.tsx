@@ -48,10 +48,41 @@ export default function Index() {
 		};
 	}, [isClient, userInfo.utcOffset]);
 
+	const SocialLinks = useMemo(() => {
+		return Object.entries(userInfo.socials || {}).map(([key, value]) => {
+			const Icon = socialIcons[key as Socials];
+			const displayName = key.charAt(0).toUpperCase() + key.slice(1);
+			let username = value;
+
+			if (value.startsWith('https://')) {
+				username = value.replace(/.*\/([^/]+)$/, '$1');
+			} else if (value.startsWith('mailto:')) {
+				username = value.replace('mailto:', '');
+			}
+
+			return (
+				<div key={key} className='flex items-center gap-2 text-zinc-700 dark:text-zinc-300 justify-between'>
+					<div className='flex items-center gap-2'>
+						<Icon className='w-5 h-5 text-custom-red-500' />
+						<span className='font-medium'>{displayName}</span>
+					</div>
+
+					<Link
+						to={value}
+						target='_blank'
+						className='text-zinc-700 dark:text-zinc-300 hover:!text-custom-red-500 transition-colors duration-200'
+						rel='noopener noreferrer'
+					>
+						{username}
+					</Link>
+				</div>
+			);
+		});
+	}, [userInfo.socials]);
 
 	return (
 		<div className='flex flex-col items-center relative z-10 max-w-6xl mx-auto gap-8'>
-			<div className='flex flex-col md:flex-row gap-8'>
+			<div className='flex flex-col md:flex-row gap-4'>
 				<div className='flex md:flex-col items-center w-full md:w-auto md:justify-between gap-4 md:fixed md:top-32 z-10'>
 					<div className='relative w-32 h-32 md:w-72 md:h-72 flex-shrink-0 rounded-3xl overflow-hidden border-2 border-custom-red-500'>
 						<img src={userInfo.avatar} alt='Profile' className='object-cover w-full h-full' />
@@ -68,7 +99,7 @@ export default function Index() {
 
 						<Separator className='mt-3 md:mt-0 md:my-3 mx-auto' />
 
-						<div className='flex flex-col space-y-2'>
+						<div className='flex-col space-y-2 hidden md:flex'>
 							<div className='flex items-center gap-2 text-zinc-700 dark:text-zinc-300 justify-between'>
 								<div className='flex items-center gap-2'>
 									<FaUser className='w-5 h-5 text-custom-red-500' />
@@ -100,43 +131,58 @@ export default function Index() {
 						</div>
 
 						{Object.entries(userInfo.socials || {}).length > 0 && (
-							<>
+							<div className='flex-col space-y-2 hidden md:flex'>
 								<Separator className='mt-3 md:mt-0 md:my-3 mx-auto' />
 
 								<div className='flex flex-col space-y-2'>
-									{Object.entries(userInfo.socials || {}).map(([key, value]) => {
-										const Icon = socialIcons[key as Socials];
-										const displayName = key.charAt(0).toUpperCase() + key.slice(1);
-										let username = value;
-
-										if (value.startsWith('https://')) {
-											username = value.replace(/.*\/([^/]+)$/, '$1');
-										} else if (value.startsWith('mailto:')) {
-											username = value.replace('mailto:', '');
-										}
-
-										return (
-											<div key={key} className='flex items-center gap-2 text-zinc-700 dark:text-zinc-300 justify-between'>
-												<div className='flex items-center gap-2'>
-													<Icon className='w-5 h-5 text-custom-red-500' />
-													<span className='font-medium'>{displayName}</span>
-												</div>
-
-												<Link
-													to={value}
-													target='_blank'
-													className='text-zinc-700 dark:text-zinc-300 hover:!text-custom-red-500 transition-colors duration-200'
-													rel='noopener noreferrer'
-												>
-													{username}
-												</Link>
-											</div>
-										);
-									})}
+									{SocialLinks}
 								</div>
-							</>
+							</div>
 						)}
 					</div>
+				</div>
+
+				<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 flex md:hidden w-full flex-col gap-4'>
+					<div className='flex flex-col space-y-2'>
+						<div className='flex items-center gap-2 text-zinc-700 dark:text-zinc-300 justify-between'>
+							<div className='flex items-center gap-2'>
+								<FaUser className='w-5 h-5 text-custom-red-500' />
+								<span className='font-medium'>Pronouns</span>
+							</div>
+
+							<p className='text-zinc-700 dark:text-zinc-300 transition-colors duration-200'>
+								{userInfo.pronouns.join('/')}
+							</p>
+						</div>
+
+						<div className='flex items-center gap-2 text-zinc-700 dark:text-zinc-300 justify-between'>
+							<div className='flex items-center gap-2'>
+								<FaClock className='w-5 h-5 text-custom-red-500' />
+								<span className='font-medium'>Local Time</span>
+							</div>
+
+							<Tooltip delayDuration={50}>
+								<TooltipTrigger>
+									<p className='text-zinc-700 dark:text-zinc-300 transition-colors duration-200'>
+										{timeData.formattedTime}
+									</p>
+								</TooltipTrigger>
+								<TooltipContent className='max-w-xs' sideOffset={5}>
+									<p className='text-sm font-semibold'>{timeData.timeDifferenceMessage}</p>
+								</TooltipContent>
+							</Tooltip>
+						</div>
+					</div>
+
+					{Object.entries(userInfo.socials || {}).length > 0 && (
+						<>
+							<Separator className='mx-auto' />
+
+							<div className='flex flex-col space-y-2'>
+								{SocialLinks}
+							</div>
+						</>
+					)}
 				</div>
 
 				<div className='flex flex-col space-y-4 md:ml-80 mt-0'>
