@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio
+    pull_policy: build
+    network_mode: bridge
+    restart: unless-stopped
+    ports:
+      - ${PORT}:3000
+    env_file:
+      - stack.env
