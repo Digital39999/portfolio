@@ -1,6 +1,7 @@
 import { FaGithub, FaTwitter, FaDiscord, FaEnvelope, FaUser, FaClock } from 'react-icons/fa';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { Separator } from '~/components/ui/separator';
+import { useEffect, useMemo, useState } from 'react';
 import { useRootData } from '~/hooks/useRootData';
 import { Socials } from '~/utils/info.server';
 import { SiWakatime } from 'react-icons/si';
@@ -8,7 +9,6 @@ import { FaBluesky } from 'react-icons/fa6';
 import { IconType } from 'react-icons/lib';
 import { Link } from '@remix-run/react';
 import { cn } from '~/other/utils';
-import { useMemo } from 'react';
 
 const socialIcons: Record<Socials, IconType> = {
 	github: FaGithub,
@@ -22,10 +22,14 @@ const socialIcons: Record<Socials, IconType> = {
 export default function Index() {
 	const { userInfo } = useRootData();
 
+	const [isClient, setIsClient] = useState(false);
+	useEffect(() => setIsClient(true), []);
+
 	const timeData = useMemo(() => {
+		if (!isClient) return { formattedTime: 'Loading..', timeDifferenceMessage: 'Loading..' };
+
 		const timezoneOffsetInMinutes = new Date().getTimezoneOffset();
 		const timezoneOffsetInHours = -(timezoneOffsetInMinutes / 60);
-
 		const date = new Date();
 		date.setHours(date.getHours() + (timezoneOffsetInHours - userInfo.utcOffset));
 
@@ -42,7 +46,8 @@ export default function Index() {
 			formattedTime: `${formattedHours}:${formattedMinutes} ${ampm}`,
 			timeDifferenceMessage,
 		};
-	}, [userInfo.utcOffset]);
+	}, [isClient, userInfo.utcOffset]);
+
 
 	return (
 		<div className='flex flex-col items-center relative z-10 max-w-6xl mx-auto gap-8'>

@@ -10,7 +10,7 @@ import { keywords } from './other/keywords';
 import info from '~/utils/info.server';
 import { StrictMode } from 'react';
 import Document from '~/document';
-import '~/styles/global.css';
+import '~/styles/globals.css';
 
 export const links: LinksFunction = () => [
 	...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
