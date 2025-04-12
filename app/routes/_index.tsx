@@ -82,6 +82,8 @@ export default function Index() {
 		});
 	}, [userInfo.socials]);
 
+	// console.log(userInfo.technologies.map((group) => `<img src="https://skillicons.dev/icons?i=${group.join(',').toLowerCase()}" />"`).join('\n<br />\n'));
+
 	return (
 		<div className='flex flex-col items-center relative z-10 max-w-6xl mx-auto gap-8'>
 			<div className='flex flex-col md:flex-row gap-4'>
