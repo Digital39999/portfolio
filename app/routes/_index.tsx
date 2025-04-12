@@ -3,12 +3,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip
 import { Separator } from '~/components/ui/separator';
 import { useEffect, useMemo, useState } from 'react';
 import { useRootData } from '~/hooks/useRootData';
+import { cn, parseStatsUrl } from '~/other/utils';
+import { Theme, useTheme } from 'remix-themes';
 import { Socials } from '~/utils/info.server';
 import { SiWakatime } from 'react-icons/si';
 import { FaBluesky } from 'react-icons/fa6';
 import { IconType } from 'react-icons/lib';
 import { Link } from '@remix-run/react';
-import { cn } from '~/other/utils';
 
 const socialIcons: Record<Socials, IconType> = {
 	github: FaGithub,
@@ -21,6 +22,7 @@ const socialIcons: Record<Socials, IconType> = {
 
 export default function Index() {
 	const { userInfo } = useRootData();
+	const [theme] = useTheme();
 
 	const [isClient, setIsClient] = useState(false);
 	useEffect(() => setIsClient(true), []);
@@ -222,12 +224,39 @@ export default function Index() {
 						</div>
 					</div>
 
+					{userInfo.readmeStats && Object.keys(userInfo.readmeStats).length > 0 && (
+						<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800'>
+							<h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>📊 Stats</h2>
+
+							<div className='grid grid-cols-1 xl:grid-cols-2 gap-2'>
+								{Object.entries(userInfo.readmeStats).map(([key, value]) => {
+									const parsedUrl = parseStatsUrl(value, theme || Theme.DARK, userInfo.themeColor);
+
+									return (
+										<div key={key} className='flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800'>
+											<img
+												alt={key}
+												src={parsedUrl}
+												className='w-full h-auto rounded-xl'
+											/>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					)}
+
 					<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800'>
 						<h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>📌 Projects</h2>
+
+						<p className='text-zinc-700 dark:text-zinc-300 mb-4'>
+							Here are some of my projects. Private contributions and projects are not listed here for privacy reasons.
+						</p>
+
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
 							{userInfo.projects.map((project) => (
 								<Link key={project.name} to={project.url} target='_blank' rel='noopener noreferrer'>
-									<div className='bg-zinc-50 dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200'>
+									<div className='bg-zinc-50 dark:bg-darker-gray p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200'>
 										<div className='flex items-center gap-4'>
 											{project.icon ? (
 												<img src={project.icon} alt={`${project.name} Icon`} className='w-12 h-12 rounded-full' />

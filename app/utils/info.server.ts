@@ -6,11 +6,12 @@ export type PortfolioConfig = z.infer<typeof InfoSchema>;
 
 const info: PortfolioConfig = {
 	name: 'Digital',
+
 	avatar: '/avatar.webp',
 	pronouns: ['he', 'him'],
 	title: 'Full-stack Developer',
 	description: 'I\'m a student pursuing full-stack development and software engineering, with a strong interest in backend systems. I enjoy working with server-side technologies, databases, and APIs to build scalable, efficient, and maintainable applications.\nI\'m always looking for projects that challenge me to deepen my understanding of system architecture, performance optimization, and cloud infrastructure.\nWhen I\'m not coding, I\'m usually diving into backend architecture articles, contributing to open source projects, or exploring how different systems scale in the real world.',
-	meta: 'Making things that work — and work well.',
+	meta: 'Making things that work — and work well. Want to know more? Check out my profile and get in touch!',
 
 	utcOffset: 2,
 	themeColor: '#ea435c',
@@ -31,6 +32,11 @@ const info: PortfolioConfig = {
 		['Discord', 'DiscordBots', 'DiscordJS', 'Gmail', 'Mastodon', 'Notion', 'StackOverflow'],
 		['Arduino', 'LaTeX', 'Postman', 'Sentry', 'Windows'],
 	],
+
+	readmeStats: { // Placeholders: {text_color}, {icon_color}, {bg_color}, {title_color}
+		wakatime: 'https://github-readme-stats.crni.xyz/api/wakatime?username=Digital&hide_title=true&disable_animations=true&bg_color={bg_color}&title_color={title_color}&text_color={text_color}&icon_color={icon_color}&langs_count=5&range=all_time&hide_border=true',
+		github: 'https://github-readme-stats.crni.xyz/api?username=Digital39999&count_private=true&disable_animations=true&card_width=150&show_icons=true&hide=contribs&bg_color={bg_color}&hide_title=true&title_color={title_color}&text_color={text_color}&icon_color={icon_color}&hide_border=true',
+	},
 
 	projects: [{
 		name: 'Status Bot',
@@ -86,7 +92,7 @@ const InfoSchema = z.object({
 	meta: z.string(),
 
 	utcOffset: z.number(),
-	themeColor: z.string(),
+	themeColor: z.string().regex(/^#[0-9A-F]{6}$/i),
 
 	socials: z.object({
 		github: z.string().optional(),
@@ -98,6 +104,11 @@ const InfoSchema = z.object({
 	}).partial().optional(),
 
 	technologies: z.array(z.array(z.string())),
+
+	readmeStats: z.object({
+		wakatime: z.string(),
+		github: z.string(),
+	}).partial().optional(),
 
 	projects: z.array(z.object({
 		url: z.string(),
