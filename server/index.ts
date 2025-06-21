@@ -7,6 +7,7 @@ import { createMiddleware } from 'hono/factory';
 import { remix } from 'remix-hono/handler';
 import { compress } from 'hono/compress';
 import { time } from '~/other/utils';
+import { cors } from 'hono/cors';
 import { config } from 'dotenv';
 import { Hono } from 'hono';
 
@@ -14,6 +15,17 @@ config({ path: '../.env' });
 
 const isProd = process.env.NODE_ENV === 'production';
 const app = new Hono<{ Bindings: HttpBindings; }>();
+
+app.use(cors({
+	origin: isProd ? [
+		configServer.baseUrl,
+	] : [
+		configServer.baseUrl,
+		'http://localhost:3000',
+	],
+	allowMethods: ['GET', 'HEAD'],
+	maxAge: 600,
+}));
 
 if (isProd) app.use(compress());
 

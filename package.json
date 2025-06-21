@@ -1,6 +1,7 @@
 {
 	"version": "1.0.0",
 	"name": "portfolio",
+	"author": "Digital39999",
 	"type": "module",
 	"scripts": {
 		"build": "remix vite:build",
