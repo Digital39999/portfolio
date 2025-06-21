@@ -59,11 +59,10 @@ export default function Index() {
 		return () => clearInterval(interval);
 	}, [revalidator]);
 
-	const currentMinutes = Math.floor((currentlyPlayingTrack?.progressMs || 0) / 60000);
-	const currentSeconds = Math.floor(((currentlyPlayingTrack?.progressMs || 0) % 60000) / 1000).toString().padStart(2, '0');
-
-	const durationMinutes = Math.floor((currentlyPlayingTrack?.track?.durationMs || 0) / 60000);
-	const durationSeconds = Math.floor(((currentlyPlayingTrack?.track?.durationMs || 0) % 60000) / 1000).toString().padStart(2, '0');
+	const currentMinutes = useMemo(() => Math.floor((progressMs || 0) / 60000), [progressMs]);
+	const currentSeconds = useMemo(() => Math.floor(((progressMs || 0) % 60000) / 1000).toString().padStart(2, '0'), [progressMs]);
+	const durationMinutes = useMemo(() => Math.floor((currentlyPlayingTrack?.track?.durationMs || 0) / 60000), [currentlyPlayingTrack]);
+	const durationSeconds = useMemo(() => Math.floor(((currentlyPlayingTrack?.track?.durationMs || 0) % 60000) / 1000).toString().padStart(2, '0'), [currentlyPlayingTrack]);
 
 	const timeData = useMemo(() => {
 		if (!isClient) return { formattedTime: 'Loading..', timeDifferenceMessage: 'Loading..' };
