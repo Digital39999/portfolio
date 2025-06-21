@@ -22,7 +22,7 @@ export default defineConfig({
 			],
 		},
 	},
-	define: {
+	define: process.env.NODE_ENV === 'production' ? undefined : {
 		'process.env': process.env,
 	},
 	plugins: [
