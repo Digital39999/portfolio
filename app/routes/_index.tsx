@@ -316,7 +316,7 @@ export default function Index() {
 
 					{currentlyPlayingTrack?.track && currentlyPlayingTrack.isPlaying && (
 						<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800'>
-							<h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>🎵 Now Playing</h2>
+							{/* <h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>🎵 Now Playing</h2> */}
 
 							<div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
 								<div className='flex-1 w-full'>
