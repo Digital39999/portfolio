@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter } from '~/components/ui/dialog';
-import { ThemeToggle } from '~/components/ThemeToggle';
+import { ThemeToggle } from '~/components/Theme';
 import { Button } from '~/components/ui/button';
 import { useScroll } from '~/hooks/useScroll';
 import { Link } from '@remix-run/react';

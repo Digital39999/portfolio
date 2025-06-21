@@ -2,11 +2,11 @@ import { isRouteErrorResponse, Outlet, useLoaderData, useRouteError } from '@rem
 import { LoaderFunctionArgs, LinksFunction, json, MetaArgs } from '@remix-run/node';
 import { createThemeAction, Theme, ThemeProvider } from 'remix-themes';
 import { themeSessionResolver } from '~/utils/storage.server';
-import { TooltipProvider } from './components/ui/tooltip';
+import { TooltipProvider } from '~/components/ui/tooltip';
 import { cssBundleHref } from '@remix-run/css-bundle';
 import ErrorComp from '~/components/ErrorPage';
 import { Layout } from '~/components/Layout';
-import { keywords } from './other/keywords';
+import { keywords } from '~/other/keywords';
 import info from '~/utils/info.server';
 import { StrictMode } from 'react';
 import Document from '~/document';

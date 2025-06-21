@@ -1,5 +1,6 @@
 import { Link, useNavigate } from '@remix-run/react';
 import { Button } from '~/components/ui/button';
+import { errorMessages } from '~/other/vars';
 import { useMemo } from 'react';
 
 export type ErrorProps = {
@@ -31,34 +32,3 @@ export default function Error({ status, text, title }: ErrorProps) {
 		</div>
 	);
 }
-
-export const errorMessages = {
-	400: {
-		title: 'Bad Request',
-		description: 'The request was invalid or could not be processed.',
-	},
-	401: {
-		title: 'Unauthorized Access',
-		description: 'Please log in to access this resource or your session has expired.',
-	},
-	403: {
-		title: 'Forbidden',
-		description: 'You do not have permission to access this resource.',
-	},
-	404: {
-		title: 'Page Not Found',
-		description: 'The page you are looking for does not exist or has been moved.',
-	},
-	500: {
-		title: 'Internal Server Error',
-		description: 'An unexpected error occurred while processing your request.',
-	},
-	503: {
-		title: 'Service Unavailable',
-		description: 'The server is currently unavailable. Please try again later.',
-	},
-	429: {
-		title: 'Rate Limited',
-		description: 'You have exceeded the rate limit for this resource.',
-	},
-};

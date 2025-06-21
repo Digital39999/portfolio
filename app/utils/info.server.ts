@@ -1,4 +1,4 @@
-import { parseZodError } from './functions.server';
+import { parseZodError } from '~/utils/functions.server';
 import { z } from 'zod';
 
 export type Socials = 'github' | 'twitter' | 'email' | 'discord' | 'bluesky' | 'wakatime';
@@ -15,6 +15,9 @@ const info: PortfolioConfig = {
 
 	utcOffset: 2,
 	themeColor: '#ea435c',
+	colorScheme: 'red',
+
+	statsFmUsername: 'digital39999',
 
 	socials: {
 		github: 'https://github.com/Digital39999',
@@ -93,6 +96,9 @@ const InfoSchema = z.object({
 
 	utcOffset: z.number(),
 	themeColor: z.string().regex(/^#[0-9A-F]{6}$/i),
+	colorScheme: z.enum(['red', 'blue', 'green', 'purple', 'pink', 'orange', 'yellow', 'gray']),
+
+	statsFmUsername: z.string().optional(),
 
 	socials: z.object({
 		github: z.string().optional(),

@@ -6,7 +6,6 @@ import { createMiddleware } from 'hono/factory';
 import { remix } from 'remix-hono/handler';
 import { compress } from 'hono/compress';
 import { time } from '~/other/utils';
-import { logger } from 'hono/logger';
 import { config } from 'dotenv';
 import { Hono } from 'hono';
 
@@ -18,19 +17,6 @@ const app = new Hono<{ Bindings: HttpBindings; }>();
 if (isProd) app.use(compress());
 
 app.use('*', cacheMiddleware(time(30, 'd', 's')), serveStatic({ root: isProd ? './build/client' : './public' }));
-app.use('*', logger((m, ...rest) => LoggerModule('Server', m, 'blue', ...rest)));
-
-/* -------------------- Links -------------------- */
-
-const linkMap = {
-	'/bsky': 'https://bsky.app/profile/crni.xyz',
-	'/discord': 'https://discord.gg/4rphpersCa',
-	'/github': 'https://github.com/Digital39999',
-};
-
-for (const [key, value] of Object.entries(linkMap)) {
-	app.get(key, async (c) => c.redirect(value, 301));
-}
 
 /* -------------------- Remix -------------------- */
 

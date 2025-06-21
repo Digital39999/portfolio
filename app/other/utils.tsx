@@ -1,7 +1,8 @@
+import { CurrentlyPlayingTrack, TimeUnits } from '~/other/types';
 import { clsx, type ClassValue } from 'clsx';
-import { TimeUnits } from '~/other/types';
 import { twMerge } from 'tailwind-merge';
 import { Theme } from 'remix-themes';
+import axios from 'axios';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -33,4 +34,25 @@ export function parseStatsUrl(url: string, theme: Theme, themeColor: string) {
 		.replace(/{text_color}/g, textColor)
 		.replace(/{icon_color}/g, themeColor)
 		.replace(/{title_color}/g, themeColor);
+}
+
+export async function getCurrentlyPlayingTrack(username: string | null): Promise<CurrentlyPlayingTrack['item'] | null> {
+	if (!username) return null;
+
+	const url = `https://api.stats.fm/api/v1/users/${username}/streams/current`;
+	return await axios.get<CurrentlyPlayingTrack>(url).then((r) => r.data.item).catch(() => null);
+}
+
+export function formatTrackName(name: string, maxLength = 50): string {
+	const parentheticalMatch = name.match(/^(.+?\))[\s-]*?/);
+	if (parentheticalMatch) name = parentheticalMatch[1] || name;
+
+	const featIndex = name.toLowerCase().indexOf('[feat');
+	if (featIndex !== -1) name = name.substring(0, featIndex).trim();
+
+	const dashIndex = name.indexOf(' - ');
+	if (dashIndex !== -1) name = name.substring(0, dashIndex).trim();
+
+	if (name.length > maxLength) name = name.substring(0, maxLength - 3).trim() + '..';
+	return name;
 }
