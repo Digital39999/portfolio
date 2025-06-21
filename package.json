@@ -32,6 +32,7 @@
 		"clsx": "2.1.1",
 		"cross-env": "7.0.3",
 		"dotenv": "16.4.5",
+		"dotenv-cli": "8.0.0",
 		"hono": "4.5.11",
 		"isbot": "^4",
 		"lucide-react": "0.471.1",
