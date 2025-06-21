@@ -36,7 +36,6 @@ export default function Index() {
 
 	useEffect(() => {
 		if (!currentlyPlayingTrack?.isPlaying || !currentlyPlayingTrack?.track) return;
-
 		setProgressMs(currentlyPlayingTrack.progressMs || 0);
 
 		const interval = setInterval(() => {
@@ -44,7 +43,6 @@ export default function Index() {
 				const next = prev + 1000;
 				if (currentlyPlayingTrack.track && next >= currentlyPlayingTrack.track.durationMs) {
 					clearInterval(interval); revalidator.revalidate();
-					return currentlyPlayingTrack.track.durationMs;
 				}
 
 				return next;
