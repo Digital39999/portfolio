@@ -2,6 +2,7 @@ import type { ServerBuild } from '@remix-run/server-runtime';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { HttpBindings, serve } from '@hono/node-server';
 import LoggerModule from '~/utils/logger.server';
+import configServer from '~/utils/config.server';
 import { createMiddleware } from 'hono/factory';
 import { remix } from 'remix-hono/handler';
 import { compress } from 'hono/compress';
@@ -43,7 +44,10 @@ app.use(async (c, next) => {
 });
 
 if (isProd) {
-	serve({ ...app, port: 3000 }, async (info) => {
+	serve({
+		...app,
+		port: configServer.port,
+	}, async (info) => {
 		console.clear();
 		LoggerModule('Hono', `🚀 Server started on port ${info.port}!\n`, 'green');
 	});
