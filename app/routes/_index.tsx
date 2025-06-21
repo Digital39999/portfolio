@@ -30,32 +30,44 @@ export default function Index() {
 	useEffect(() => setIsClient(true), []);
 
 	const currentlyPlayingTrack = useLoaderData<typeof clientLoader>();
-	const [progressMs, setProgressMs] = useState(currentlyPlayingTrack?.progressMs || 0);
 	const [isPlayingPreview, setIsPlayingPreview] = useState(false);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 
-	useEffect(() => {
-		if (!currentlyPlayingTrack?.isPlaying || !currentlyPlayingTrack?.track) return;
-		setProgressMs(currentlyPlayingTrack.progressMs || 0);
-
-		const interval = setInterval(() => {
-			setProgressMs((prev) => {
-				const next = prev + 1000;
-				if (currentlyPlayingTrack.track && next >= currentlyPlayingTrack.track.durationMs) {
-					clearInterval(interval); revalidator.revalidate();
-				}
-
-				return next;
-			});
-		}, 1000);
-
-		return () => clearInterval(interval);
-	}, [currentlyPlayingTrack, revalidator]);
+	const [baseProgressMs, setBaseProgressMs] = useState(currentlyPlayingTrack?.progressMs || 0);
+	const [lastUpdatedMs, setLastUpdatedMs] = useState(Date.now());
+	const [tick, setTick] = useState(0);
 
 	useEffect(() => {
-		const interval = setInterval(() => revalidator.revalidate(), 20000);
-		return () => clearInterval(interval);
-	}, [revalidator]);
+		if (currentlyPlayingTrack?.isPlaying && currentlyPlayingTrack.track) {
+			setBaseProgressMs(currentlyPlayingTrack.progressMs || 0);
+			setLastUpdatedMs(Date.now());
+			hasRevalidatedOnEnd.current = false;
+		}
+	}, [currentlyPlayingTrack]);
+
+	useEffect(() => {
+		const iv = setInterval(() => setTick((t) => t + 1), 1000);
+		return () => clearInterval(iv);
+	}, []);
+
+	const progressMs = useMemo(() => baseProgressMs + (Date.now() - lastUpdatedMs), [baseProgressMs, lastUpdatedMs, tick]); // eslint-disable-line react-hooks/exhaustive-deps
+	const durationMs = currentlyPlayingTrack?.track?.durationMs || 0;
+	const isSongOver = progressMs >= durationMs;
+	const hasRevalidatedOnEnd = useRef(false);
+
+	useEffect(() => {
+		if (!currentlyPlayingTrack?.isPlaying || isSongOver) return;
+
+		const iv = setInterval(() => revalidator.revalidate(), 20000);
+		return () => clearInterval(iv);
+	}, [currentlyPlayingTrack?.isPlaying, isSongOver, revalidator]);
+
+	useEffect(() => {
+		if (isSongOver && !hasRevalidatedOnEnd.current) {
+			revalidator.revalidate();
+			hasRevalidatedOnEnd.current = true;
+		}
+	}, [isSongOver, revalidator]);
 
 	const currentMinutes = useMemo(() => Math.floor((progressMs || 0) / 60000), [progressMs]);
 	const currentSeconds = useMemo(() => Math.floor(((progressMs || 0) % 60000) / 1000).toString().padStart(2, '0'), [progressMs]);
@@ -315,7 +327,22 @@ export default function Index() {
 											</h3>
 
 											<p className='text-zinc-700 dark:text-zinc-300 font-semibold mb-4'>
-												by {currentlyPlayingTrack.track.artists.map((a) => a.name).join(', ')}
+												by {currentlyPlayingTrack.track.artists.map((a, i, arr) => (
+													<span key={a.id}>
+														<Link
+															target='_blank'
+															to={`https://stats.fm/artist/${a.id}`}
+															rel='noopener noreferrer'
+															className={cn(
+																`relative inline-block text-custom-${userInfo.colorScheme}-500 transition-all duration-300 ease-in-out`,
+																'after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full',
+															)}
+														>
+															{a.name}
+														</Link>
+														{i < arr.length - 1 && ', '}
+													</span>
+												))}
 											</p>
 										</div>
 
