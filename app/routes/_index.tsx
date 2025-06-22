@@ -1,8 +1,9 @@
 import { ClientLoaderFunctionArgs, Link, useLoaderData, useRevalidator } from '@remix-run/react';
 import { cn, formatTrackName, getCurrentlyPlayingTrack, parseStatsUrl } from '~/other/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
-import { FaGithub, FaUser, FaClock, FaPlay, FaPause } from 'react-icons/fa';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FaGithub, FaUser, FaClock } from 'react-icons/fa';
+import { MdMusicNote, MdMusicOff } from 'react-icons/md';
 import { Separator } from '~/components/ui/separator';
 import info, { Socials } from '~/utils/info.server';
 import { useRootData } from '~/hooks/useRootData';
@@ -332,7 +333,7 @@ export default function Index() {
 												className={`rounded-full p-3 bg-custom-${userInfo.colorScheme}-500 hover:bg-custom-${userInfo.colorScheme}-600 transition-colors duration-200 shadow-lg text-white`}
 												aria-label='Play preview'
 											>
-												{isPlayingPreview ? <FaPause className='w-5 h-5' /> : <FaPlay className='w-5 h-5' />}
+												{isPlayingPreview ? <MdMusicOff className='w-5 h-5' /> : <MdMusicNote className='w-5 h-5' />}
 											</button>
 										)}
 									</div>
