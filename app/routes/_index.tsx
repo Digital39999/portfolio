@@ -101,6 +101,7 @@ export default function Index() {
 		if (!audioRef.current) {
 			audioRef.current = new Audio(currentlyPlayingTrack.track.spotifyPreview);
 			audioRef.current.onended = () => setIsPlayingPreview(false);
+			audioRef.current.volume = 0.5;
 		}
 
 		if (isPlayingPreview) {
