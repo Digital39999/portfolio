@@ -56,8 +56,6 @@ export default function Index() {
 	const hasRevalidatedOnEnd = useRef(false);
 
 	useEffect(() => {
-		if (!currentlyPlayingTrack?.isPlaying || isSongOver) return;
-
 		const iv = setInterval(() => revalidator.revalidate(), 20000);
 		return () => clearInterval(iv);
 	}, [currentlyPlayingTrack?.isPlaying, isSongOver, revalidator]);
@@ -75,7 +73,7 @@ export default function Index() {
 	const durationSeconds = useMemo(() => Math.floor(((currentlyPlayingTrack?.track?.durationMs || 0) % 60000) / 1000).toString().padStart(2, '0'), [currentlyPlayingTrack]);
 
 	const timeData = useMemo(() => {
-		if (!isClient) return { formattedTime: 'Loading..', timeDifferenceMessage: 'Loading..' };
+		if (!isClient) return { formattedTime: 'Loading', timeDifferenceMessage: 'Loading' };
 
 		const timezoneOffsetInMinutes = new Date().getTimezoneOffset();
 		const timezoneOffsetInHours = -(timezoneOffsetInMinutes / 60);
@@ -140,8 +138,11 @@ export default function Index() {
 					<Link
 						to={value}
 						target='_blank'
-						className={`text-zinc-700 dark:text-zinc-300 hover:!text-custom-${userInfo.colorScheme}-500 transition-colors duration-200`}
 						rel='noopener noreferrer'
+						className={cn(
+							`relative inline-block text-zinc-700 dark:text-zinc-300 hover:!text-custom-${userInfo.colorScheme}-500 transition-colors duration-200`,
+							'after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full',
+						)}
 					>
 						{username}
 					</Link>
@@ -292,28 +293,6 @@ export default function Index() {
 						</div>
 					</div>
 
-					{userInfo.readmeStats && Object.keys(userInfo.readmeStats).length > 0 && (
-						<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800'>
-							<h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>📊 Stats</h2>
-
-							<div className='grid grid-cols-1 xl:grid-cols-2 gap-2'>
-								{Object.entries(userInfo.readmeStats).map(([key, value]) => {
-									const parsedUrl = parseStatsUrl(value, theme || Theme.DARK, userInfo.themeColor);
-
-									return (
-										<div key={key} className='flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800'>
-											<img
-												alt={key}
-												src={parsedUrl}
-												className='w-full h-auto rounded-xl'
-											/>
-										</div>
-									);
-								})}
-							</div>
-						</div>
-					)}
-
 					{currentlyPlayingTrack?.track && currentlyPlayingTrack.isPlaying && (
 						<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800'>
 							{/* <h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>🎵 Now Playing</h2> */}
@@ -377,6 +356,28 @@ export default function Index() {
 										className='w-full h-48 md:w-32 md:h-32 rounded-lg object-cover shadow-lg'
 									/>
 								</a>
+							</div>
+						</div>
+					)}
+
+					{userInfo.readmeStats && Object.keys(userInfo.readmeStats).length > 0 && (
+						<div className='bg-white dark:bg-darker-gray p-6 rounded-xl border border-zinc-200 dark:border-zinc-800'>
+							<h2 className='text-2xl font-bold text-zinc-800 dark:text-white mb-4'>📊 Stats</h2>
+
+							<div className='grid grid-cols-1 xl:grid-cols-2 gap-2'>
+								{Object.entries(userInfo.readmeStats).map(([key, value]) => {
+									const parsedUrl = parseStatsUrl(value, theme || Theme.DARK, userInfo.themeColor);
+
+									return (
+										<div key={key} className='flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800'>
+											<img
+												alt={key}
+												src={parsedUrl}
+												className='w-full h-auto rounded-xl'
+											/>
+										</div>
+									);
+								})}
 							</div>
 						</div>
 					)}
