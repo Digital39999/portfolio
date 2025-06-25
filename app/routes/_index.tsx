@@ -353,8 +353,8 @@ export default function Index() {
 
 								<a href={songUrl || '#'} target='_blank' rel='noopener noreferrer' className='flex-shrink-0'>
 									<img
-										src={currentlyPlayingTrack.track.albums[0]?.image}
-										alt={currentlyPlayingTrack.track.albums[0]?.name}
+										src={currentlyPlayingTrack.track.albums.find((a) => a?.image)?.image || '/spotify.webp'}
+										alt={currentlyPlayingTrack.track.albums.find((a) => a?.image)?.name || 'Album Cover'}
 										className='w-full h-48 md:w-32 md:h-32 rounded-lg object-cover shadow-lg'
 									/>
 								</a>
