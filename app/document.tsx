@@ -14,6 +14,7 @@ export default function Document({ children, ssrTheme }: DocumentProps) {
 		<html id='root' lang='en' suppressHydrationWarning={true} className={cn(theme)}>
 			<head>
 				<Meta />
+
 				<meta charSet='utf-8' />
 				<meta name='viewport' content='width=device-width, initial-scale=1' />
 				<meta name='theme-color' media='(prefers-color-scheme: light)' content='white' />
