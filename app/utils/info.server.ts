@@ -1,8 +1,10 @@
 import { parseZodError } from '~/utils/functions.server';
 import { z } from 'zod';
 
-export type Socials = 'github' | 'twitter' | 'email' | 'discord' | 'bluesky' | 'wakatime';
 export type PortfolioConfig = z.infer<typeof InfoSchema>;
+export type Socials = typeof socialsList[number];
+
+const socialsList = ['github', 'twitter', 'email', 'discord', 'bluesky', 'wakatime', 'linkedin', 'facebook', 'instagram', 'youtube', 'twitch', 'reddit', 'mastodon', 'telegram', 'tiktok', 'threads'] as const;
 
 const info: PortfolioConfig = {
 	name: 'Digital',
@@ -98,17 +100,9 @@ const InfoSchema = z.object({
 	themeColor: z.string().regex(/^#[0-9A-F]{6}$/i),
 	colorScheme: z.enum(['red', 'blue', 'green', 'purple', 'pink', 'orange', 'yellow', 'gray']),
 
+	socials: z.object(Object.fromEntries(socialsList.map((social) => [social, z.string().url()]))).partial().optional(),
+
 	statsFmUsername: z.string().optional(),
-
-	socials: z.object({
-		github: z.string().optional(),
-		twitter: z.string().optional(),
-		email: z.string().optional(),
-		discord: z.string().optional(),
-		bluesky: z.string().optional(),
-		wakatime: z.string().optional(),
-	}).partial().optional(),
-
 	technologies: z.array(z.array(z.string())),
 
 	readmeStats: z.object({

@@ -1,6 +1,6 @@
-import { FaGithub, FaTwitter, FaDiscord, FaEnvelope } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaDiscord, FaEnvelope, FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaTwitch, FaReddit } from 'react-icons/fa';
+import { SiWakatime, SiMastodon, SiTelegram, SiTiktok, SiThreads } from 'react-icons/si';
 import { Socials } from '~/utils/info.server';
-import { SiWakatime } from 'react-icons/si';
 import { FaBluesky } from 'react-icons/fa6';
 import { IconType } from 'react-icons/lib';
 
@@ -11,6 +11,16 @@ export const socialIcons: Record<Socials, IconType> = {
 	discord: FaDiscord,
 	bluesky: FaBluesky,
 	wakatime: SiWakatime,
+	linkedin: FaLinkedin,
+	facebook: FaFacebook,
+	instagram: FaInstagram,
+	youtube: FaYoutube,
+	twitch: FaTwitch,
+	reddit: FaReddit,
+	mastodon: SiMastodon,
+	telegram: SiTelegram,
+	tiktok: SiTiktok,
+	threads: SiThreads,
 };
 
 export const errorMessages = {

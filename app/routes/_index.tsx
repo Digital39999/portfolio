@@ -123,6 +123,8 @@ export default function Index() {
 
 	const SocialLinks = useMemo(() => {
 		return Object.entries(userInfo.socials || {}).map(([key, value]) => {
+			if (!value) return <></>;
+
 			const Icon = socialIcons[key as Socials];
 			const displayName = key.charAt(0).toUpperCase() + key.slice(1);
 			let username = value;
