@@ -2,13 +2,13 @@ import { ClientLoaderFunctionArgs, Link, useLoaderData, useRevalidator } from '@
 import { cn, formatTrackName, getCurrentlyPlayingTrack, parseStatsUrl } from '~/other/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FaGithub, FaUser, FaClock } from 'react-icons/fa';
-import { MdMusicNote, MdMusicOff } from 'react-icons/md';
+import { FaGithub, FaUser, FaClock, FaPause } from 'react-icons/fa';
 import { Separator } from '~/components/ui/separator';
 import info, { Socials } from '~/utils/info.server';
 import { useRootData } from '~/hooks/useRootData';
 import { useIsMobile } from '~/hooks/useMobile';
 import { Theme, useTheme } from 'remix-themes';
+import { MdMusicNote } from 'react-icons/md';
 import { socialIcons } from '~/other/vars';
 
 export async function loader() {
@@ -97,19 +97,25 @@ export default function Index() {
 	}, [isClient, userInfo.utcOffset]);
 
 	const togglePreview = useCallback(() => {
-		if (!currentlyPlayingTrack?.track?.spotifyPreview) return;
+		if (!currentlyPlayingTrack?.track) {
+			audioRef.current = null;
+			return;
+		}
 
-		if (!audioRef.current) {
-			audioRef.current = new Audio(currentlyPlayingTrack.track.spotifyPreview);
+		const preview = currentlyPlayingTrack.track.spotifyPreview;
+		const currentAudio = audioRef.current;
+
+		if (!currentAudio || currentAudio.src !== preview) {
+			audioRef.current = new Audio(preview);
 			audioRef.current.onended = () => setIsPlayingPreview(false);
 			audioRef.current.volume = 0.5;
 		}
 
 		if (isPlayingPreview) {
-			audioRef.current.pause();
+			audioRef.current?.pause();
 			setIsPlayingPreview(false);
 		} else {
-			audioRef.current.play().catch(() => { });
+			audioRef.current?.play().catch(() => { });
 			setIsPlayingPreview(true);
 		}
 	}, [currentlyPlayingTrack, isPlayingPreview]);
@@ -335,7 +341,7 @@ export default function Index() {
 												className={`rounded-full p-3 bg-custom-${userInfo.colorScheme}-500 hover:bg-custom-${userInfo.colorScheme}-600 transition-colors duration-200 shadow-lg text-white`}
 												aria-label='Play preview'
 											>
-												{isPlayingPreview ? <MdMusicOff className='w-5 h-5' /> : <MdMusicNote className='w-5 h-5' />}
+												{isPlayingPreview ? <FaPause className='w-5 h-5' /> : <MdMusicNote className='w-5 h-5' size={'3.5rem'} />}
 											</button>
 										)}
 									</div>
