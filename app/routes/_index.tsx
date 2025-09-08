@@ -311,7 +311,7 @@ export default function Index() {
 								<div className='flex-1 w-full'>
 									<div className='flex flex-col md:flex-row items-start md:items-center gap-4'>
 										<div className='flex-1'>
-											<h3 className={`text-3xl font-extrabold text-custom-${userInfo.colorScheme}-500 leading-tight tracking-tight mb-2`}>
+											<h3 className={`text-2xl md:text-3xl font-extrabold text-custom-${userInfo.colorScheme}-500 leading-tight tracking-tight mb-2`}>
 												{formatTrackName(currentlyPlayingTrack.track.name)}
 											</h3>
 
@@ -359,11 +359,11 @@ export default function Index() {
 									</div>
 								</div>
 
-								<a href={songUrl || '#'} target='_blank' rel='noopener noreferrer' className='flex-shrink-0'>
+								<a href={songUrl || '#'} target='_blank' rel='noopener noreferrer' className='flex-shrink-0 w-full md:w-auto overflow-hidden rounded-lg'>
 									<img
 										src={currentlyPlayingTrack.track.albums.find((a) => a?.image)?.image || '/spotify.webp'}
 										alt={currentlyPlayingTrack.track.albums.find((a) => a?.image)?.name || 'Album Cover'}
-										className='w-full h-48 md:w-32 md:h-32 rounded-lg object-cover shadow-lg'
+										className='w-full h-48 md:w-32 md:h-32 object-cover shadow-lg transition-transform duration-300 hover:md:scale-100 hover:scale-110'
 									/>
 								</a>
 							</div>
