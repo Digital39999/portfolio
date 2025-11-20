@@ -15,7 +15,7 @@ const info: PortfolioConfig = {
 	description: 'I\'m a student pursuing full-stack development and software engineering, with a strong interest in backend systems. I enjoy working with server-side technologies, databases, and APIs to build scalable, efficient, and maintainable applications.\nI\'m always looking for projects that challenge me to deepen my understanding of system architecture, performance optimization, and cloud infrastructure.\nWhen I\'m not coding, I\'m usually diving into backend architecture articles, contributing to open source projects, or exploring how different systems scale in the real world.',
 	meta: 'Making things that work — and work well. Want to know more? Check out my profile and get in touch!',
 
-	utcOffset: 2,
+	utcOffset: 1,
 	themeColor: '#ea435c',
 	colorScheme: 'red',
 
