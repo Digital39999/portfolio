@@ -12,7 +12,7 @@ const info: PortfolioConfig = {
 	avatar: '/avatar.webp',
 	pronouns: ['he', 'him'],
 	title: 'Full-stack Developer',
-	description: 'I\'m a student pursuing full-stack development and software engineering, with a strong interest in backend systems. I enjoy working with server-side technologies, databases, and APIs to build scalable, efficient, and maintainable applications.\nI\'m always looking for projects that challenge me to deepen my understanding of system architecture, performance optimization, and cloud infrastructure.\nWhen I\'m not coding, I\'m usually diving into backend architecture articles, contributing to open source projects, or exploring how different systems scale in the real world.',
+	description: 'I\'m a student pursuing backend development and software engineering. I enjoy working with server-side technologies, databases, and APIs to build scalable, efficient, and maintainable applications.\nI\'m always looking for projects that challenge me to deepen my understanding of system architecture, performance optimization, and cloud infrastructure.\nWhen I\'m not coding, I\'m usually diving into backend architecture articles, contributing to open source projects, or exploring how different systems scale in the real world.',
 	meta: 'Making things that work — and work well. Want to know more? Check out my profile and get in touch!',
 
 	utcOffset: 1,
@@ -31,11 +31,10 @@ const info: PortfolioConfig = {
 	},
 
 	technologies: [
-		['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'TailwindCSS', 'Vite', 'NextJS', 'Remix', 'VSCode', 'Markdown'],
-		['NodeJS', 'ExpressJS', 'GoLang', 'GraphQL', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'RabbitMQ', 'Prisma', 'Docker', 'Linux'],
-		['Git', 'GitHub', 'GitHubActions', 'GitLab', 'BitBucket', 'NPM', 'PNPM', 'Cloudflare', 'Netlify', 'Vercel', 'Ubuntu'],
-		['Discord', 'DiscordBots', 'DiscordJS', 'Gmail', 'Mastodon', 'Notion', 'StackOverflow'],
-		['Arduino', 'LaTeX', 'Postman', 'Sentry', 'Windows'],
+		['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'TailwindCSS', 'Remix', 'VSCode', 'Markdown'],
+		['NodeJS', 'ExpressJS', 'PostgreSQL', 'MongoDB', 'Redis', 'RabbitMQ', 'Prisma', 'Docker', 'Linux'],
+		['Git', 'GitHub', 'GitHubActions', 'BitBucket', 'NPM', 'PNPM', 'Cloudflare', 'Netlify', 'Vercel'],
+		['Discord', 'DiscordBots', 'DiscordJS', 'Gmail', 'Mastodon', 'Notion', 'StackOverflow', 'Postman', 'Windows'],
 	],
 
 	readmeStats: { // Placeholders: {text_color}, {icon_color}, {bg_color}, {title_color}
