@@ -4,7 +4,7 @@ FROM node:20.3.0-alpine3.18 AS build
 WORKDIR /app
 COPY . .
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@9.15.5
 
 RUN pnpm install
 RUN pnpm build
@@ -14,7 +14,7 @@ FROM node:20.3.0-alpine3.18
 
 WORKDIR /app
 
-RUN npm install -g pnpm
+RUN npm install -g pnpm@9.15.5
 COPY --from=build /app /app
 
 CMD ["pnpm", "start"]
