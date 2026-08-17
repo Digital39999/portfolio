@@ -1,8 +1,6 @@
 import type { ServerBuild } from '@remix-run/server-runtime';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { HttpBindings, serve } from '@hono/node-server';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
 import LoggerModule from '~/utils/logger.server';
 import configServer from '~/utils/config.server';
 import { createMiddleware } from 'hono/factory';
@@ -16,7 +14,6 @@ import { Hono } from 'hono';
 config({ path: '../.env' });
 
 const isProd = process.env.NODE_ENV === 'production';
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = new Hono<{ Bindings: HttpBindings; }>();
 
 app.use(cors({
@@ -32,7 +29,7 @@ app.use(cors({
 
 if (isProd) app.use(compress());
 
-app.use('*', cacheMiddleware(time(30, 'd', 's')), serveStatic({ root: isProd ? join(__dirname, '../build/client') : './public' }));
+app.use('*', cacheMiddleware(time(30, 'd', 's')), serveStatic({ root: isProd ? './build/client' : './public' }));
 
 /* -------------------- Remix -------------------- */
 
