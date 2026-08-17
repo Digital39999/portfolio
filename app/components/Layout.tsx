@@ -39,10 +39,19 @@ export default function Footer() {
 	return (
 		<div className='container mx-auto px-6 sm:px-8 py-8'>
 			<div className='flex flex-col items-center justify-center text-center'>
-				<div className='flex flex-col items-center justify-center'>
+				<div className='flex flex-col items-center justify-center gap-2'>
 					<p className='text-sm text-muted-foreground'>
 						Copyright © 2019 - {new Date().getFullYear()}. All Rights Reserved.
 					</p>
+
+					<div className='flex items-center gap-4 text-sm text-muted-foreground'>
+						<Link to='/privacy' className='hover:underline underline-offset-4'>
+							Privacy Policy
+						</Link>
+						<Link to='/terms' className='hover:underline underline-offset-4'>
+							Terms of Service
+						</Link>
+					</div>
 				</div>
 			</div>
 		</div>
