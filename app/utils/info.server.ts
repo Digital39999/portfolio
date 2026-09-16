@@ -62,28 +62,6 @@ const info: PortfolioConfig = {
 		description: 'Utility library for TypeScript and Prisma.',
 		icon: 'https://cf.crni.xyz/L0Fl8Unic9.png',
 		url: 'https://github.com/Digital39999/ts-prisma',
-	}, {
-		name: 'Channel Watch',
-		description: 'Channel messages tool with token login.',
-		icon: 'https://cw.crni.xyz/logo.png',
-		url: 'https://cw.crni.xyz',
-	}, {
-		name: 'Vlsm Calculator',
-		description: 'Network subnetting calculator tool.',
-		icon: 'https://vlsm.crni.xyz/logo.webp',
-		url: 'https://vlsm.crni.xyz',
-	}, {
-		name: 'Whisper Models',
-		description: 'Downloader for speech recognition models.',
-		url: 'https://github.com/Digital39999/whisper-models',
-	}, {
-		name: 'Redis Scheduler',
-		description: 'Redis job scheduler and webhook trigger.',
-		url: 'https://github.com/Digital39999/redis-scheduler',
-	}, {
-		name: 'Analytics Engine',
-		description: 'Real-time analytics engine for any service.',
-		url: 'https://github.com/Digital39999/analytics-engine',
 	}],
 };
 
