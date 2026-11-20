@@ -4,7 +4,7 @@
 	"author": "Digital39999",
 	"type": "module",
 	"scripts": {
-		"build": "pnpm exec remix vite:build",
+		"build": "pnpm exec remix vite:build && node scripts/prerender.mjs",
 		"dev": "pnpm exec vite --host",
 		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
 		"start": "dotenv cross-env NODE_ENV=production node ./build/server/index.js",

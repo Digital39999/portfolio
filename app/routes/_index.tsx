@@ -1,28 +1,18 @@
-import { ClientLoaderFunctionArgs, Link, useLoaderData, useRevalidator } from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import { cn, formatTrackName, getCurrentlyPlayingTrack, parseStatsUrl } from '~/other/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FaGithub, FaUser, FaClock, FaPause } from 'react-icons/fa';
 import { Separator } from '~/components/ui/separator';
-import info, { Socials } from '~/utils/info.server';
+import type { Socials } from '~/utils/info.server';
 import { useRootData } from '~/hooks/useRootData';
 import { useIsMobile } from '~/hooks/useMobile';
 import { Theme, useTheme } from 'remix-themes';
 import { MdMusicNote } from 'react-icons/md';
 import { socialIcons } from '~/other/vars';
-
-export async function loader() {
-	return { spotify: info.statsFmUsername || null };
-}
-
-clientLoader.hydrate = true;
-export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
-	const { spotify } = await serverLoader<typeof loader>();
-	return await getCurrentlyPlayingTrack(spotify);
-}
+import type { CurrentlyPlayingTrack } from '~/other/types';
 
 export default function Index() {
-	const revalidator = useRevalidator();
 	const { userInfo } = useRootData();
 	const isMobile = useIsMobile();
 	const [theme] = useTheme();
@@ -30,7 +20,7 @@ export default function Index() {
 	const [isClient, setIsClient] = useState(false);
 	useEffect(() => setIsClient(true), []);
 
-	const currentlyPlayingTrack = useLoaderData<typeof clientLoader>();
+	const [currentlyPlayingTrack, setCurrentlyPlayingTrack] = useState<CurrentlyPlayingTrack['item'] | null>(null);
 	const [isPlayingPreview, setIsPlayingPreview] = useState(false);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -42,9 +32,23 @@ export default function Index() {
 		if (currentlyPlayingTrack?.isPlaying && currentlyPlayingTrack.track) {
 			setBaseProgressMs(currentlyPlayingTrack.progressMs || 0);
 			setLastUpdatedMs(Date.now());
-			hasRevalidatedOnEnd.current = false;
 		}
 	}, [currentlyPlayingTrack]);
+
+	useEffect(() => {
+		let active = true;
+		const refreshTrack = async () => {
+			const track = await getCurrentlyPlayingTrack(userInfo.statsFmUsername || null);
+			if (active) setCurrentlyPlayingTrack(track);
+		};
+
+		void refreshTrack();
+		const interval = window.setInterval(refreshTrack, 60_000);
+		return () => {
+			active = false;
+			window.clearInterval(interval);
+		};
+	}, []);
 
 	useEffect(() => {
 		const iv = setInterval(() => setTick((t) => t + 1), 1000);
@@ -53,21 +57,6 @@ export default function Index() {
 
 	const progressMs = useMemo(() => baseProgressMs + (Date.now() - lastUpdatedMs), [baseProgressMs, lastUpdatedMs, tick]); // eslint-disable-line react-hooks/exhaustive-deps
 	const durationMs = currentlyPlayingTrack?.track?.durationMs || 0;
-	const isSongOver = progressMs >= durationMs;
-	const hasRevalidatedOnEnd = useRef(false);
-
-	useEffect(() => {
-		const iv = setInterval(() => revalidator.revalidate(), 20000);
-		return () => clearInterval(iv);
-	}, [currentlyPlayingTrack?.isPlaying, isSongOver, revalidator]);
-
-	useEffect(() => {
-		if (isSongOver && !hasRevalidatedOnEnd.current) {
-			revalidator.revalidate();
-			hasRevalidatedOnEnd.current = true;
-		}
-	}, [isSongOver, revalidator]);
-
 	const currentMinutes = useMemo(() => Math.floor((progressMs || 0) / 60000), [progressMs]);
 	const currentSeconds = useMemo(() => Math.floor(((progressMs || 0) % 60000) / 1000).toString().padStart(2, '0'), [progressMs]);
 	const durationMinutes = useMemo(() => Math.floor((currentlyPlayingTrack?.track?.durationMs || 0) / 60000), [currentlyPlayingTrack]);

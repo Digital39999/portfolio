@@ -45,10 +45,10 @@ export default function Footer() {
 					</p>
 
 					<div className='flex items-center gap-4 text-sm text-muted-foreground'>
-						<Link to='/privacy' className='hover:underline underline-offset-4'>
+						<Link to='/privacy' reloadDocument className='hover:underline underline-offset-4'>
 							Privacy Policy
 						</Link>
-						<Link to='/terms' className='hover:underline underline-offset-4'>
+						<Link to='/terms' reloadDocument className='hover:underline underline-offset-4'>
 							Terms of Service
 						</Link>
 					</div>
